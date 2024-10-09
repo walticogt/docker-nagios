@@ -45,7 +45,7 @@ services:
     container_name: nagios_monitoring
     restart: always
     ports:
-      - "8080:80"  # Exponer Nagios en el puerto 8080 en el host
+      - "8060:80"  # Exponer Nagios en el puerto 8080 en el host
     environment:
       NAGIOS_FQDN: nagios.localhost
       NAGIOSADMIN_USER: nagiosadmin
