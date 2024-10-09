@@ -12,3 +12,6 @@
 
 # Demo (actualmente Oct 2024 - caido)
 	https://nagiosxi.demos.nagios.com/
+
+# Agents (download): 
+	https://www.nagios.org/ncpa/#downloads
