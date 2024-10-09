@@ -1,0 +1,70 @@
+services:
+  # Servicio para la base de datos MySQL
+  mysql:
+    image: mysql:5.7
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - my_network
+
+  # Servicio para el servidor web con PHP
+  web:
+    image: php:7.4-fpm
+    container_name: php_web
+    volumes:
+      - ./app:/var/www/html
+    networks:
+      - my_network
+
+  # Servicio Nginx para servir la aplicación PHP
+  nginx:
+    image: nginx:latest
+    container_name: nginx_server
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./app:/var/www/html
+    depends_on:
+      - web
+    networks:
+      - my_network
+
+  # Servicio para Nagios
+  nagios:
+    image: jasonrivers/nagios:latest
+    container_name: nagios_monitoring
+    restart: always
+    ports:
+      - "8080:80"  # Exponer Nagios en el puerto 8080 en el host
+    environment:
+      NAGIOS_FQDN: nagios.localhost
+      NAGIOSADMIN_USER: nagiosadmin
+      NAGIOSADMIN_PASS: admin_password
+    volumes:
+      - nagios_config:/opt/nagios/etc
+      - nagios_alerts:/var/log/nagios
+    networks:
+      - my_network
+    depends_on:
+      - mysql
+      - web
+      - nginx
+
+volumes:
+  mysql_data:
+  nagios_config:
+  nagios_alerts:
+
+networks:
+  my_network:
+    driver: bridge
