@@ -9,3 +9,6 @@
 
 # Se recomienda leer:
 	https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/toc.html
+
+# Demo (actualmente Oct 2024 - caido)
+	https://nagiosxi.demos.nagios.com/
